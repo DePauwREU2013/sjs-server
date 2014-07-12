@@ -13,6 +13,10 @@ class SJSS extends SJSServerStack {
       <body>
         <h1>Hello, world!</h1>
         Say <a href="hello-scalate">hello to Scalate</a>.
+        <form action="compile" method="POST">
+          <input type="submit" value="Push Me" />
+          <input type="text" name="files" />
+        </form>
         <canvas id="output"></canvas>
       </body>
     </html>
