@@ -3,7 +3,7 @@
 ## Build & Run ##
 
 ```sh
-$ cd SJS-Server
+$ cd sjs-server
 $ ./sbt
 > container:start
 > browse
