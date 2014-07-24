@@ -3,7 +3,11 @@ package edu.depauw.sjss
 import org.scalatra._
 import scalate.ScalateSupport
 
-class SJSS extends SJSServerStack {
+import org.json4s.{DefaultFormats, Formats}
+import org.scalatra.json._
+
+class SJSS extends SJSServerStack with JacksonJsonSupport {
+  protected implicit val jsonFormats: Formats = DefaultFormats
 
   get("/") {
     val submitScript = scala.xml.Unparsed(
@@ -69,7 +73,7 @@ class SJSS extends SJSServerStack {
     val files = params("files") // TODO how to get the map?
     println(files)
     
-    contentType = "application/javascript"
-    new java.io.File("output.js")
+    contentType = formats("json")
+    new java.io.File("output.js") // TODO return a URL for this embedded in JSON
   }
 }
