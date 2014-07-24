@@ -15,20 +15,22 @@
     <canvas id="output"></canvas>
     <script>
       $("#testform").submit(function(e) {
-        var files = {
-          "files": {
-            "fileone.scala": {
-              "filename": "fileone.scala",
-              "type": "text/plain",
-              "content": $("textarea[name='fileone']").val()
-            },
-            "filetwo.scala": {
-              "filename": "filetwo.scala",
-              "type": "text/plain",
-              "content": $("textarea[name='filetwo']").val()
-            }
+        var files = [
+          {
+            "title": "fileone.scala",
+            "key": 1,
+            "contents": $("textarea[name='fileone']").val(),
+            "language": "scala",
+            "dirty": false
+          },
+          {
+            "title": "filetwo.scala",
+            "key": 2,
+            "contents": $("textarea[name='filetwo']").val(),
+            "language": "scala",
+            "dirty": false
           }
-        };
+        ];
         alert(JSON.stringify(files));
         var callback = function() {}; // TODO
         $.ajax({

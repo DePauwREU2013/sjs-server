@@ -14,11 +14,20 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
   }
   
   post("/compile") {
-    println(params)
-    val files = params("files") // TODO how to get the map?
-    println(files)
+    val sources = parsedBody.extract[List[SourceFile]]
+    println(sources)
     
     contentType = formats("json")
-    new java.io.File("output.js") // TODO return a URL for this embedded in JSON
+    if (true) {
+      Ok(CompileSuccess("output.js"))
+    } else {
+      NotFound(CompileFailure("whatever"))
+    }
   }
 }
+
+case class SourceFile(title: String, key: Int, contents: String, language: String, dirty: Boolean)
+
+case class CompileSuccess(url: String)
+
+case class CompileFailure(foo: String)
