@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>SJS Server Demo</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="foo"></script>
+  </head>
+  <body>
+    <h1>Hello, world!</h1>
+    Say <a href="hello-scalate">hello to Scalate</a>.
+    <form id="testform">
+      <input type="submit" value="Push Me" />
+      <textarea name="fileone" rows="4">file one</textarea>
+      <textarea name="filetwo" rows="4">file two</textarea>
+    </form>
+    <canvas id="output"></canvas>
+    <script>
+      $("#testform").submit(function(e) {
+        var files = {
+          "files": {
+            "fileone.scala": {
+              "filename": "fileone.scala",
+              "type": "text/plain",
+              "content": $("textarea[name='fileone']").val()
+            },
+            "filetwo.scala": {
+              "filename": "filetwo.scala",
+              "type": "text/plain",
+              "content": $("textarea[name='filetwo']").val()
+            }
+          }
+        };
+        alert(JSON.stringify(files));
+        var callback = function() {}; // TODO
+        $.ajax({
+          type: "POST",
+          url: "compile",
+          data: JSON.stringify(files),
+          success: callback,
+          dataType: "json",
+          contentType: "application/json",
+          processData: false
+        });
+        return false;
+      })
+    </script>
+  </body>
+</html>

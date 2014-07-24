@@ -3,8 +3,8 @@
 ## Build & Run ##
 
 ```sh
-$ cd SJS-Server
-$ ./sbt
+$ cd sjs-server
+$ sbt
 > container:start
 > browse
 > ~ ;copy-resources;aux-compile
