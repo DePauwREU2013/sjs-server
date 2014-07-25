@@ -21,6 +21,9 @@ object SjsserverBuild extends Build {
       version := Version,
       scalaVersion := ScalaVersion,
       resolvers += Classpaths.typesafeReleases,
+      resolvers += Resolver.url("scala-js-releases",
+        url("http://dl.bintray.com/content/scala-js/scala-js-releases"))(
+          Resolver.ivyStylePatterns),
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
