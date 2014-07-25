@@ -202,10 +202,10 @@ object Compiler{
       Compiler.Logger
     ).scalaJSCode.map(_.content).mkString("\n\n")
   }
-  def export(p: CompleteCIClasspath) = {
+  def exportCI(p: CompleteCIClasspath) = {
     p.allCode.map(_.content).mkString("\n\n")
   }
-  def export(p: CompleteNCClasspath) = {
+  def exportNC(p: CompleteNCClasspath) = {
     p.allCode.map(_.content).mkString("\n\n")
   }
 
