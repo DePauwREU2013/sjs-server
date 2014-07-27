@@ -19,7 +19,7 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
   post("/compile") {
     val sources = parsedBody.extract[List[SourceFile]]
     println(sources)
-    println(compile(sources.head.contents))
+    println(fastOpt(sources.head.contents))
     
     contentType = formats("json")
     if (true) {

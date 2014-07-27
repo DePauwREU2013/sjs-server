@@ -32,10 +32,10 @@ object Classpath {
         "/scalatags_sjs0.5_2.11-0.3.8.jar",
         "/scalarx_sjs0.5_2.11-0.2.5.jar",
         "/scala-async_2.11-0.9.1.jar",
-        "/scalaxy-loops_2.11-0.1.1.jar",
+        "/scalaxy-loops_2.11-0.1.1.jar" /* ,
         "/runtime_sjs0.5_2.11-0.1-SNAPSHOT.jar",
         "/page_sjs0.5_2.11-0.1-SNAPSHOT.jar",
-        "/shared_sjs0.5_2.11-0.1-SNAPSHOT.jar"
+        "/shared_sjs0.5_2.11-0.1-SNAPSHOT.jar" */
       )
     } yield {
       val stream = getClass.getResourceAsStream(name)
