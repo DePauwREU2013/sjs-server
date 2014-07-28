@@ -1453,7 +1453,7 @@ ScalaJS.c.LFoo$.prototype.$$js$exported$meth$main__O = (function() {
   return ScalaJS.i.sjs_js_JSApp$class__$js$exported$meth$main__sjs_js_JSApp__O(this)
 });
 ScalaJS.c.LFoo$.prototype.main__V = (function() {
-  /*<skip>*/
+  ScalaJS.g["window"]["alert"]("Hello world!")
 });
 ScalaJS.c.LFoo$.prototype.init___ = (function() {
   ScalaJS.c.O.prototype.init___.call(this);
