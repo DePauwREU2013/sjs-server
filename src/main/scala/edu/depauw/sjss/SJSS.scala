@@ -11,9 +11,9 @@ import fiddle.Compiler
 class SJSS extends SJSServerStack with JacksonJsonSupport {
   protected implicit val jsonFormats: Formats = DefaultFormats
   
-  get("/foo") {
+  get("/result/:id") {
     contentType = "application/javascript"
-    new java.io.File("foo.js")
+    new java.io.File("result/" + params("id")) // TODO prevent exploits?
   }
   
   post("/compile") {
@@ -23,10 +23,17 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
     println(sources)
     
     // TODO combine all sources into one; wrap in appropriate template
-    // TODO the result needs to come back as a file name, not the file contents
     fastOpt(sources.head.contents) match {
       case (output, Some(result)) =>
-        Ok(CompileSuccess(result))
+        val outfile = new java.io.File("result/output.js") // TODO create unique filename
+        val out = new java.io.PrintWriter(outfile , "UTF-8")
+        try {
+          out.print(result)
+        } finally {
+          out.close
+        }
+        
+        Ok(CompileSuccess("/result/" + outfile.getName))
       case (output, None) =>
         NotFound(CompileFailure(output))
     }
