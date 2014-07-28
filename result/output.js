@@ -1406,6 +1406,12 @@ ScalaJS.i.scm_SeqLike$class__$init$__scm_SeqLike__V = (function($$this) {
 ScalaJS.i.scm_Traversable$class__$init$__scm_Traversable__V = (function($$this) {
   /*<skip>*/
 });
+ScalaJS.i.sjs_js_JSApp$class__$js$exported$meth$main__sjs_js_JSApp__O = (function($$this) {
+  $$this.main__V()
+});
+ScalaJS.i.sjs_js_JSApp$class__$init$__sjs_js_JSApp__V = (function($$this) {
+  /*<skip>*/
+});
 ScalaJS.i.sjsr_RuntimeString$class__charAt__sjsr_RuntimeString__I__C = (function($$this, index) {
   return (ScalaJS.uD($$this["charCodeAt"](index)) & 65535)
 });
@@ -1432,6 +1438,68 @@ ScalaJS.i.sjsr_RuntimeString$class__substring__sjsr_RuntimeString__I__T = (funct
 ScalaJS.i.sjsr_RuntimeString$class__substring__sjsr_RuntimeString__I__I__T = (function($$this, beginIndex, endIndex) {
   return ScalaJS.as.T($$this["substring"](beginIndex, endIndex))
 });
+/** @constructor */
+ScalaJS.c.LFoo$ = (function() {
+  ScalaJS.c.O.call(this)
+});
+ScalaJS.c.LFoo$.prototype = new ScalaJS.h.O();
+ScalaJS.c.LFoo$.prototype.constructor = ScalaJS.c.LFoo$;
+/** @constructor */
+ScalaJS.h.LFoo$ = (function() {
+  /*<skip>*/
+});
+ScalaJS.h.LFoo$.prototype = ScalaJS.c.LFoo$.prototype;
+ScalaJS.c.LFoo$.prototype.$$js$exported$meth$main__O = (function() {
+  return ScalaJS.i.sjs_js_JSApp$class__$js$exported$meth$main__sjs_js_JSApp__O(this)
+});
+ScalaJS.c.LFoo$.prototype.main__V = (function() {
+  /*<skip>*/
+});
+ScalaJS.c.LFoo$.prototype.init___ = (function() {
+  ScalaJS.c.O.prototype.init___.call(this);
+  ScalaJS.n.LFoo = this;
+  ScalaJS.i.sjs_js_JSApp$class__$init$__sjs_js_JSApp__V(this);
+  return this
+});
+ScalaJS.c.LFoo$.prototype["main"] = (function() {
+  return this.$$js$exported$meth$main__O()
+});
+ScalaJS.is.LFoo$ = (function(obj) {
+  return (!(!((obj && obj.$classData) && obj.$classData.ancestors.LFoo$)))
+});
+ScalaJS.as.LFoo$ = (function(obj) {
+  if ((ScalaJS.is.LFoo$(obj) || (obj === null))) {
+    return obj
+  } else {
+    ScalaJS.throwClassCastException(obj, "Foo$")
+  }
+});
+ScalaJS.isArrayOf.LFoo$ = (function(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.LFoo$)))
+});
+ScalaJS.asArrayOf.LFoo$ = (function(obj, depth) {
+  if ((ScalaJS.isArrayOf.LFoo$(obj, depth) || (obj === null))) {
+    return obj
+  } else {
+    ScalaJS.throwArrayCastException(obj, "LFoo$;", depth)
+  }
+});
+ScalaJS.d.LFoo$ = new ScalaJS.ClassTypeData({
+  LFoo$: 0
+}, false, "Foo$", ScalaJS.d.O, {
+  LFoo$: 1,
+  sjs_js_JSApp: 1,
+  O: 1
+});
+ScalaJS.c.LFoo$.prototype.$classData = ScalaJS.d.LFoo$;
+ScalaJS.n.LFoo = undefined;
+ScalaJS.m.LFoo = (function() {
+  if ((!ScalaJS.n.LFoo)) {
+    ScalaJS.n.LFoo = new ScalaJS.c.LFoo$().init___()
+  };
+  return ScalaJS.n.LFoo
+});
+ScalaJS.e["Foo"] = ScalaJS.m.LFoo;
 /** @constructor */
 ScalaJS.c.Ljava_io_OutputStream = (function() {
   ScalaJS.c.O.call(this)

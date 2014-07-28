@@ -148,27 +148,23 @@ function init_toolbar() {
 
 		// Send the source code to the compiler and execute the result:
 		var build_request = $.ajax({
-				type: "POST",
-				url: HOST,
-				data: JSON.stringify(workspace),
-				dataType: "json",
-				contentType: "application/json",
+			type: "POST",
+			url: HOST,
+			data: JSON.stringify(workspace),
+			dataType: "json",
+			contentType: "application/json",
 
-				// If it compiles, get the scripts it produced:
-				success: function (data) {
-					// TODO: remove hard-coded file names
-					$.ajax({
-						url: JSON.parse(data)[0],
-						dataType: "script",
-						success: function() {
-						$.ajax({
-							url: JSON.parse(data)[1],
-							dataType: "script",
-							success: function(launcher_data) {
-								eval(launcher_data);
-							}	
-						}) 							
-						}
+			// If it compiles, get the scripts it produced:
+			success: function (data) {
+				// TODO: remove hard-coded file names
+				console.log(data);
+				$.ajax({
+					url: data.url,
+					dataType: "script",
+					always: function() {
+						alert("Uh...");
+						Foo().main();					
+					}
 
 				});
 			}
