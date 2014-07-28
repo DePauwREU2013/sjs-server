@@ -1,0 +1,1 @@
+example.ScalaJSExample().main();

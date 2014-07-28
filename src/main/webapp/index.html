@@ -1,47 +1,112 @@
+<!doctype html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>SJS Server Demo</title>
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-  </head>
-  <body>
-    <h1>Hello, world!</h1>
-    <form id="testform">
-      <input type="submit" value="Push Me" />
-      <textarea name="fileone" rows="4">file one</textarea>
-      <textarea name="filetwo" rows="4">file two</textarea>
-    </form>
-    <canvas id="output"></canvas>
-    <script>
-      $("#testform").submit(function(e) {
-        var files = [
-          {
-            "title": "fileone.scala",
-            "key": 1,
-            "contents": $("textarea[name='fileone']").val(),
-            "language": "scala",
-            "dirty": false
-          },
-          {
-            "title": "filetwo.scala",
-            "key": 2,
-            "contents": $("textarea[name='filetwo']").val(),
-            "language": "scala",
-            "dirty": false
-          }
-        ];
-        var callback = function() {}; // TODO
-        $.ajax({
-          type: "POST",
-          url: "compile",
-          data: JSON.stringify(files),
-          success: callback,
-          dataType: "json",
-          contentType: "application/json",
-          processData: false
-        });
-        return false;
-      })
-    </script>
-  </body>
+    <head>
+        <title>Scales IDE</title>
+
+        <!-- Load imported JavaScript libraries --> 
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="./jquery-ui-1.11.0.custom/jquery-ui.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+        <script src="./fancytree/jquery.fancytree.js"></script>
+        <script src="./fancytree/jquery.fancytree.themeroller.js"></script>
+        
+        <!-- Load scripts -->
+        <script type="text/javascript" src="sassy_messages.js"></script>
+        <script type="text/javascript" src="local.js"></script>
+
+        <!-- Load stylesheets -->
+        <link rel="stylesheet" href="./jquery-ui-1.11.0.custom/jquery-ui.min.css" />
+        <link rel="stylesheet" href="./fancytree/skin-themeroller/ui.fancytree.css" />
+        <link rel="stylesheet" type="text/css" href="style-ace.css" />
+		<!-- Latest compiled and minified JavaScript -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <!-- Hack to fix poor design decision in rolling a jQueryUI theme -->
+        <style>
+			.ui-state-hover {border: 1px solid #272822 !important;
+				             font-weight: normal !important;}
+			#context-list {font-size: smaller;}
+            .fancytree-node, .fancytree-active, .fancytree-focus, .fancytree-title {font-weight: normal !important;}
+            .bold {font-weight: bold !important;}
+		</style>
+    </head>
+    <body>      
+
+<!-- Top-most panel -->
+        <div id="header">
+            <div id="github-link">Source code available at <a href="//github.com/DePauwREU2013/scales-ide">
+                GitHub</a>
+            </div>
+            <div class="toolbar">
+                
+                <!-- Toolbar: File Manipulation -->
+
+                <!-- New Project -->
+                 
+                <!-- New file -->
+                <button id="new-file-button" type="button" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-file"></span> New File
+                </button>
+
+                <!-- Save Changes -->
+                <button title="Ctrl-S (Mac: &#8984;-S)"id="save-changes-button" type="button" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> Save Changes
+                </button>
+
+                <!-- Zoom Out -->
+                <button title="Ctrl-Alt-- (Mac: &#8984;-Alt-)"id="zoom-out-button" type="button" class="btn btn-default btn-xs"> 
+                    <span class="glyphicon glyphicon-zoom-out"></span> Zoom Out
+                </button>
+                <!-- Zoom In -->
+                <button title="Ctrl-Alt-+ (Mac: &#8984;-Alt-+)" id="zoom-in-button" type="button" class="btn btn-default btn-xs"> 
+                    <span class="glyphicon glyphicon-zoom-in"></span> Zoom In
+                </button>
+                <!-- Editor Options -->
+                <button title="Ctrl-, (Mac: &#8984;-,)"id="editor-options-button" type="button" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-cog"></span> Editor Options
+                </button>
+            </div>
+            <div class="toolbar">
+
+                <!-- Toolbar: Build Tools -->
+        
+                <!-- Run -->
+                <button title="Ctrl-Enter (Mac: &#8984;-Return)" id="build-run-button" type="button" class="btn btn-default btn-xs"> 
+                    <span class="glyphicon glyphicon-play"></span> Build & Run
+                </button>
+
+                <!-- Stop -->
+                <button  id="stop-button" type="button" class="btn btn-default btn-xs"> 
+                    <span class="glyphicon glyphicon-stop"></span> Stop
+                </button>
+            </div>
+		</div>
+        
+<!-- Left-most panel -->
+        <div id="context-list">
+            <!-- Project Explorer: header-->
+        	<div id="context-heading" class="fancytree-active ui-widget ui-widget-content">Project Explorer:</div>
+
+            <!-- Project Explorer: file tree -->
+            <div id="tree" style="border:none;"></div>
+        </div>
+
+<!-- Two primary panels -->
+        <div id="panels">
+            <!-- Panel for ACE editor --> 	
+            <div id="resizable" class="context-panel">
+                <div id="editor" class="scales-editor"></div>
+            </div>
+            
+            <!-- Panel for output canvas -->   
+            <div id="autodiv" class="context-panel">
+                <div id="playground"></div>
+				<canvas  class="scales-editor" id="output">
+				</canvas>
+            </div>
+        </div>
+    </body>
 </html>

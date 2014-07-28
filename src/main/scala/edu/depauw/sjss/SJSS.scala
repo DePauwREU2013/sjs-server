@@ -59,7 +59,7 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
 }
 
 // Case classes defining the JSON interfaces:
-case class SourceFile(title: String, key: Int, contents: String, language: String, dirty: Boolean)
+case class SourceFile(title: String, key: String, contents: String, language: String, dirty: Boolean)
 
 case class CompileSuccess(url: String)
 

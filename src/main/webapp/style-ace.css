@@ -1,0 +1,180 @@
+a {
+	text-decoration: none;
+	color: #66d9ef;
+}
+
+a:hover {
+	color: #ae81ff;
+}
+
+#new-dialog {
+    display: none;    
+}
+
+#header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 30px;
+	background-color: #272822;
+	color: white;
+	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono','Consolas','source-code-pro',monospace;
+}
+#context-list {
+    position: absolute;
+    top: 39px;
+    bottom: 0;
+    left: 0;
+    width: 200px; 
+    background-color: #272822;
+    color: #f8f8f2;
+    
+    font-family: 'Monaco','Menlo','Ubuntu Mono','Consolas','source-code-pro',monospace;
+}
+
+.menu {
+    list-style-type: none;
+    padding-left: .7em;
+}
+
+.toolbar {
+	position: relative;
+	margin: 0;
+	padding: 2px 10px 5px 10px; 
+	
+	float: left;
+	border: 1px solid gray;
+	border-left: none;
+	border-top: none;
+/*	border-top: 1px solid gray;
+	border-bottom: 1px solid gray; */
+
+}
+.separator {
+	height: 25px;
+	width: 2px;
+	background-color: gray;
+
+}
+.icon {
+	display: inline-block;
+	fill: white;
+	margin: 5px;
+	width: 16px;
+	height: 16px;	
+}
+
+.icon:hover {fill: #66d9ef;}
+
+.icon:active {fill: #ae81ff;}
+
+#context-heading {
+	margin-left: -4px;
+	padding: 5px;
+}
+
+#panels {
+    position: absolute;
+    top: 39px;
+    right: 0px;
+    bottom: 0px;
+    left: 190px;
+}
+.context-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: 11px;
+}
+.scales-editor {
+    position: absolute; 
+    top: 0; 
+    bottom: 0; 
+}
+.highlight {
+    background-color: white;
+}
+#resizable { 
+
+    width: 50%;
+}
+
+#editor { 
+     left:0; 
+     right: 0; 
+}
+
+#autodiv {
+    left: 50%;
+    right: 0px;
+    /*margin-left: 5px;*/
+}
+
+canvas {
+	
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+canvas:moz-full-screen {
+	width: 100%;
+	height: 100%;
+}
+canvas:webkit-full-screen {
+	height: 100%;
+	width: 100%;
+}
+
+#current-file {
+	position: absolute;
+	bottom: .5em;
+	padding-right: 2em;
+	font-family: "Consolas","source-code-pro","Monaco","Menlo","Ubuntu Mono",monospace;
+	color: gray;
+	font-size: small;
+}
+
+.ui-resizable-e {
+	cursor: e-resize;
+	width: 10px;
+	right: -5px;
+	top: 0;
+	height: 100%;
+	background-image: url(resources/images/grabber.svg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: gray;
+}
+
+.ui-resizable-s {
+	background-image: url(resources/images/grabber-horiz.svg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: gray;
+	height: 10px;
+	bottom: -10px;
+}
+
+ul.project-tree {
+    list-style-type: none;
+    padding: .5em;
+    padding-left: 1em;
+}
+
+#tree {
+	clear: left;
+	margin-bottom: 1em;
+}
+#github-link {
+	font-size: .8em;
+	margin: .5em 1em 0 0;
+	float: right;
+}
+
+input {
+	max-height: 2em;
+}
