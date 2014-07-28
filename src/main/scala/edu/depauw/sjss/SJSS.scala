@@ -17,15 +17,18 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
   }
   
   post("/compile") {
+    contentType = formats("json")
+    
     val sources = parsedBody.extract[List[SourceFile]]
     println(sources)
-    println(fastOpt(sources.head.contents))
     
-    contentType = formats("json")
-    if (true) {
-      Ok(CompileSuccess("output.js"))
-    } else {
-      NotFound(CompileFailure("whatever"))
+    // TODO combine all sources into one; wrap in appropriate template
+    // TODO the result needs to come back as a file name, not the file contents
+    fastOpt(sources.head.contents) match {
+      case (output, Some(result)) =>
+        Ok(CompileSuccess(result))
+      case (output, None) =>
+        NotFound(CompileFailure(output))
     }
   }
 
@@ -48,8 +51,9 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
   }
 }
 
+// Case classes defining the JSON interfaces:
 case class SourceFile(title: String, key: Int, contents: String, language: String, dirty: Boolean)
 
 case class CompileSuccess(url: String)
 
-case class CompileFailure(foo: String)
+case class CompileFailure(error: String)
