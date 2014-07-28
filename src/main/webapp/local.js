@@ -161,8 +161,7 @@ function init_toolbar() {
 				$.ajax({
 					url: data.url,
 					dataType: "script",
-					always: function() {
-						alert("Uh...");
+					success: function() {
 						Foo().main();					
 					}
 
