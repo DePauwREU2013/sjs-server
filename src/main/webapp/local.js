@@ -24,9 +24,9 @@ $(document).ready(function() {
 
 	init_editor_events();
 
- 	load_file_tree();
+    load_file_tree();
 
- 	init_toolbar();
+    init_toolbar();
 
 });
 
@@ -57,7 +57,7 @@ function init_local_storage() {
 function load_file_tree() {
 
 	// Create the fancytree object:
-	$('#tree').fancytree({  		
+    $('#tree').fancytree({	
 		source: workspace,
 		debugLevel: 0,
 		// When a node is activated (clicked/keyboard):
@@ -76,7 +76,7 @@ function load_file_tree() {
 
 			}
 	
-	        // Set active_file to the newly activated file:
+             // Set active_file to the newly activated file:
 			active_file = node;	
 
 			// Load document contents into editor:
@@ -84,7 +84,7 @@ function load_file_tree() {
 		}, 
 		// Apply jQueryUI theme:
 		extensions: ["themeroller"]
-	  });
+    });
 
 	// Initialize global variable tree to the fancyTree object:
 	tree  = $("#tree").fancytree("getTree");
@@ -100,13 +100,13 @@ function init_toolbar() {
 		// New file
 		file_name = prompt("Enter a name for the file:");
 		if (file_name) {
-  		workspace.push({
-  		  "title": file_name,
-  		  "language": "scala",
-  		  "key": tree.count() +1,
-  		  "contents": "",
-  		  "dirty": false
-		  });
+            workspace.push({
+                "title": file_name,
+                "language": "scala",
+                "key": tree.count() +1,
+                "contents": "",
+                "dirty": false
+            });
 		}
   
 		// Save the workspace to local storage
@@ -190,13 +190,12 @@ function init_ace() {
 	editor.setReadOnly(true);
 
 	editor.commands.addCommands([{
-   		name: 'buildAndRun',
-    	bindKey: {win: 'Ctrl-Enter',  mac: 'Command-Return'},
-    	exec: function(editor) {
-        //...
-        	$('#build-run-button').trigger("click");
-    	},
-    	readOnly: true // false if this command should not apply in readOnly mode
+        name: 'buildAndRun',
+        bindKey: {win: 'Ctrl-Enter',  mac: 'Command-Return'},
+        exec: function(editor) {
+            $('#build-run-button').trigger("click");
+        },
+        readOnly: true
 	}, {
 		name: 'zoomIn',
 		bindKey: {win: 'Ctrl-Alt-=', mac: 'Command-Alt-='},
@@ -241,7 +240,7 @@ function init_jquery_ui() {
 	$('#header').resize( function() {
 		$('#panels').css('top', parseInt($(this).css('height')) + 9 + "px");
 		$('#autodiv').css("left", $("#resizable").css("width"));
-	    $('#autodiv').css("right", "0");
+        $('#autodiv').css("right", "0");
 		$('#context-list').css('top', 
 			parseInt($(this).css('height')) + 9 + "px");
 		$('canvas').attr('width', $('#autodiv').css('width'));
@@ -252,8 +251,8 @@ function init_jquery_ui() {
 
 	// Make context-list resizable with a handle on the right:
 	$('#context-list').resizable( {
-    	handles: "e"
-  	});
+        handles: "e"
+    });
 
 	// Triggered on context-list (project explorer) resize...
 	// Automatically resize the panels to the right:
@@ -264,28 +263,28 @@ function init_jquery_ui() {
 		$('canvas').attr('width', $('#autodiv').css('width'));
 		$('canvas').attr('height', $('#autodiv').css('height'));
 		render(); // Redraw canvas
-  	});
+    });
 
 	// Set resizable container for Ace editor with handle to right:
 	$( "#resizable" ).resizable( {
-    	handles: "e"
-  	});
+        handles: "e"
+    });
 	
 	// Triggered when Ace editor panel is resized:
-  	$("#resizable").resize( function() {
+    $("#resizable").resize( function() {
 	
 		// Notify Ace to update its size:
-	    editor.resize();
+        editor.resize();
 	
 		// Automatically resize right panel to fill the
 		// remainder of div#panels:
-	    $('#autodiv').css("left", $("#resizable").css("width"));
-	    $('#autodiv').css("right", "0");
+        $('#autodiv').css("left", $("#resizable").css("width"));
+        $('#autodiv').css("right", "0");
 		$('#current-file').css('right',$('#resizable').css('right'));
 		$('canvas').attr('width', $('#autodiv').css('width'));
 		$('canvas').attr('height', $('#autodiv').css('height'));
 		render(); // Redraw canvas
-	  }); 
+    }); 
 }
 
 
@@ -299,7 +298,7 @@ function exec_parser() {
       parser.parse(editor.getValue());
     } catch(exn) {
       if (!editor.getSession().$annotations) {
-        editor.getSession().$annotations = new Array();
+        editor.getSession().$annotations = [];
       }
 
       var myAnno = {
@@ -341,8 +340,8 @@ function update_buffer() {
 function init_editor_events() {
   // Syntax checking/error reporting
   editor.on("change", function(e) {
-  	exec_parser();
-  	update_buffer();
+    exec_parser();
+    update_buffer();
   });
 
 }
@@ -408,6 +407,6 @@ document.addEventListener("webkitfullscreenchange", function(e) {
 // Trigger fullscreen using ALT+ENTER
 document.addEventListener("keydown", function(e) {
 	if (e.keyCode == 13 && e.altKey) {
-  		toggleFullScreen();
-  	}
+        toggleFullScreen();
+    }
 });
