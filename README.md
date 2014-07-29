@@ -13,3 +13,5 @@ $ sbt
 ```
 
 If `browse` doesn't launch your browser, manually open [http://localhost:8080/](http://localhost:8080/) in your browser.
+
+*In the current version, you must have a `main.scala` file, which will be wrapped in main method boilerplate by the server.*
