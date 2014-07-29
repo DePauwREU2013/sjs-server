@@ -8,6 +8,10 @@ var active_file,
 	worker,
 	HOST,
 	SOURCE;
+	canvas_size = {
+		width: 0,
+		height: 0
+	};
 
 init_local_storage();
 
@@ -393,16 +397,23 @@ window.onbeforeunload = function() {
  *  Work in progress
  */
 function toggleFullScreen() {
-	var canvas = document.querySelector('#playground');
-	// output
+	var canvas = document.querySelector('#output');
+	
+	// Mozilla
 	if (canvas.mozRequestFullScreen) {
 		if (fullScreen) {
 			document.mozCancelFullScreen();
+			canvas.width = canvas_size.width;
+			canvas.height = canvas_size.height;
+			Foo().main();
 		} else {
+			canvas_size.width = canvas.width;
+			canvas_size.height = canvas.height;
+
 			canvas.mozRequestFullScreen();
 			$('#output').attr("width",window.outerWidth);
-			$('#output').attr("height".window.outerHeight);
-			render();
+			$('#output').attr("height",window.outerHeight);
+			Foo().main();
 		}
 
 	// Webkit
@@ -429,6 +440,20 @@ document.addEventListener("webkitfullscreenchange", function(e) {
 
 	}
 })
+
+
+document.addEventListener("mozfullscreenchange", function(e) {
+	var canvas = document.querySelector('#output');
+	if (fullScreen) {
+		console.log(e);
+		$('#output').attr("width",window.outerWidth);
+		$('#output').attr("height", window.outerHeight);
+		Foo().main();
+	} else {
+		// canvas.width = canvas_size.width;
+		// canvas.height = canvas_size.height;
+	}
+});
 
 // Trigger fullscreen using ALT+ENTER
 document.addEventListener("keydown", function(e) {

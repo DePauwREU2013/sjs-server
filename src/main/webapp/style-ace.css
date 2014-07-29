@@ -125,8 +125,7 @@ canvas {
 }
 
 canvas:moz-full-screen {
-	width: 100%;
-	height: 100%;
+
 }
 canvas:webkit-full-screen {
 	height: 100%;
