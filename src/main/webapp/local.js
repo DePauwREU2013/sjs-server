@@ -157,7 +157,6 @@ function init_toolbar() {
 			// If it compiles, get the scripts it produced:
 			success: function (data) {
 				// TODO: remove hard-coded file names
-				console.log(data);
 				$.ajax({
 					url: data.url,
 					dataType: "script",
