@@ -148,6 +148,9 @@ function init_toolbar() {
 
 		// Send the source code to the compiler and execute the result:
 		var build_request = $.ajax({
+			beforeSend: function() {
+				$('#scales-spinner').show();
+			},
 			type: "POST",
 			url: HOST,
 			data: JSON.stringify(workspace),
@@ -162,9 +165,15 @@ function init_toolbar() {
 					dataType: "script",
 					success: function() {
 						Foo().main();					
+					},
+					complete: function() {
+						$('#scales-spinner').hide();
 					}
 
-				});
+				});	
+			},
+			complete: function() {
+				$('#scales-spinner').hide();
 			}
 		});	
 	});
