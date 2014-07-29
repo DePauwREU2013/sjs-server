@@ -22,7 +22,21 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
     val sources = parsedBody.extract[List[SourceFile]]
     println(sources)
     
-    val source = prefix + (for (source <- sources) yield source.contents).mkString("\n\n") + suffix
+    val auxSources = for (source <- sources if source.title != "main.scala") yield source.contents
+    
+    val auxSource = auxSources.mkString("\n\n")
+    
+    val mainSources = for (source <- sources if source.title == "main.scala") yield source.contents
+    
+    val mainSource =
+      if (mainSources.nonEmpty) mainPrefix + mainSources.mkString("\n\n") + mainSuffix
+      else ""
+    
+    val source = prefix + auxSource + mainSource + suffix
+    
+    println("------")
+    println(source)
+    println("------")
     
     fastOpt(source) match {
       case (output, Some(result)) =>
@@ -44,9 +58,16 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
     | object Foo extends js.JSApp {
     """.stripMargin
     
-  val suffix = """
+  val mainPrefix = """
     |
-    |   def main(): Unit = {}
+    |   def main(): Unit = {
+    """.stripMargin
+    
+  val mainSuffix = """
+    |   }
+    """.stripMargin
+    
+  val suffix = """
     | }
     """.stripMargin
     

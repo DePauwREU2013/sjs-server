@@ -1,5 +1,5 @@
 package fiddle
-import acyclic.file
+
 import scala.tools.nsc.Settings
 import scala.reflect.io
 import scala.tools.nsc.util._
@@ -32,6 +32,17 @@ import scala.Some
  */
 object Compiler{
   val blacklist = Seq("<init>")
+
+  val prelude =
+    """
+      |import scalatags.JsDom.all._
+      |import org.scalajs.dom
+      |import scalajs.js
+      |import edu.depauw.scales.act._
+      |import edu.depauw.scales.graphics._
+      |import edu.depauw.scales.music._
+      |import edu.depauw.scales.reactive._
+    """.stripMargin
 
   /**
    * Converts Scalac's weird Future type 
@@ -131,8 +142,8 @@ object Compiler{
       }
     }
 
-    val file      = new BatchSourceFile(makeFile(Shared.prelude.getBytes ++ code.getBytes), Shared.prelude + code)
-    val position  = new OffsetPosition(file, pos + Shared.prelude.length)
+    val file      = new BatchSourceFile(makeFile(prelude.getBytes ++ code.getBytes), prelude + code)
+    val position  = new OffsetPosition(file, pos + prelude.length)
 
     await(toFuture[Unit](compiler.askReload(List(file), _)))
 
@@ -158,7 +169,7 @@ object Compiler{
 
   def compile(src: Array[Byte], logger: String => Unit = _ => ()): Option[PartialIRClasspath] = {
 
-    val singleFile = makeFile(Shared.prelude.getBytes ++ src)
+    val singleFile = makeFile(prelude.getBytes ++ src)
 
     val (settings, reporter, vd, jCtx, jDirs) = initGlobalBits(logger)
     val compiler = new nsc.Global(settings, reporter) with InMemoryGlobal{ g =>
