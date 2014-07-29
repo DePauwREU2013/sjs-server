@@ -20,6 +20,7 @@ object SjsserverBuild extends Build {
       libraryDependencies ++= Seq(
         "org.scala-lang" % "scala-reflect" % scalaVersion.value,
         "org.scala-lang.modules.scalajs" %%% "scalajs-dom" % "0.6",
+        "edu.depauw" %%% "sjs-scales" % "0.1-SNAPSHOT",
         "com.scalatags" %%% "scalatags" % "0.3.8",
         "org.scala-lang.modules" %% "scala-async" % "0.9.1" % "provided",
         "com.scalarx" %%% "scalarx" % "0.2.5",
@@ -49,8 +50,8 @@ object SjsserverBuild extends Build {
         "org.json4s" %% "json4s-jackson" % "3.2.9",
         "org.scala-lang" % "scala-compiler" % scalaVersion.value,
         "com.typesafe.akka" %% "akka-actor" % "2.3.2",
-        "org.scala-lang.modules.scalajs" % s"scalajs-compiler_${scalaVersion.value}" % "0.5.0",
-        "org.scala-lang.modules.scalajs" %% "scalajs-tools" % "0.5.0",
+        "org.scala-lang.modules.scalajs" % s"scalajs-compiler_${scalaVersion.value}" % "0.5.2",
+        "org.scala-lang.modules.scalajs" %% "scalajs-tools" % "0.5.2",
         "org.scala-lang.modules" %% "scala-async" % "0.9.1" % "provided",
         "com.scalatags" %% "scalatags" % "0.3.8",
         "com.lihaoyi" %% "acyclic" % "0.1.2" % "provided",
