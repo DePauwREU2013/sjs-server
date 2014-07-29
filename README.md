@@ -2,6 +2,8 @@
 
 ## Build & Run ##
 
+Until the scales library is published, first clone the [sjs-scales](http://github.com/depauwreu2013/sjs-scales) repo and follow the instructions in the README.
+
 ```sh
 $ cd sjs-server
 $ sbt
