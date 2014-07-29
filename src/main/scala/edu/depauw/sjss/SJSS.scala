@@ -22,8 +22,9 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
     val sources = parsedBody.extract[List[SourceFile]]
     println(sources)
     
-    // TODO combine all sources into one; wrap in appropriate template
-    fastOpt(sources.head.contents) match {
+    val source = prefix + (for (source <- sources) yield source.contents).mkString("\n\n") + suffix
+    
+    fastOpt(source) match {
       case (output, Some(result)) =>
         val outfile = new java.io.File("result/output.js") // TODO create unique filename
         val out = new java.io.PrintWriter(outfile , "UTF-8")
@@ -39,6 +40,16 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
     }
   }
 
+  val prefix = """
+    | object Foo extends js.JSApp {
+    """.stripMargin
+    
+  val suffix = """
+    |
+    |   def main(): Unit = {}
+    | }
+    """.stripMargin
+    
   def compile(txt: String): (String, Option[String]) =
     compileStuff(txt, Compiler.export)
   def fastOpt(txt: String): (String, Option[String]) =
