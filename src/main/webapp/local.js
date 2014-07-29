@@ -58,32 +58,50 @@ function load_file_tree() {
 
 	// Create the fancytree object:
     $('#tree').fancytree({	
+		extensions: ["themeroller","edit"],
 		source: workspace,
 		debugLevel: 0,
 		// When a node is activated (clicked/keyboard):
 		activate: function(event, data){
 			var node = data.node;
-
-			// Enable the ACE editor:		
-
-
 			// If this is the first file activated this session:
 			if (editor.getReadOnly()) {
+				// Enable the ACE editor:		
 				editor.setReadOnly(false);
-
-			// Else, the user has just switched from another file	
 			} else {
-
+				// Else, the user has just switched from another file	
 			}
-	
              // Set active_file to the newly activated file:
 			active_file = node;	
-
 			// Load document contents into editor:
 			editor.setValue(workspace[get_index()].contents);
 		}, 
-		// Apply jQueryUI theme:
-		extensions: ["themeroller"]
+		// Allow file renaming:
+		edit: {
+			triggerStart: ["f2", "dblclick", "shift+click", "mac+enter"],
+			beforeClose: function(event, data){
+			// Return false to prevent cancel/save (data.input is available)
+			},
+			beforeEdit: function(event, data){
+			// Return false to prevent edit mode
+			},
+			close: function(event, data){
+			// Editor was removed
+			},
+			edit: function(event, data){
+			// Editor was opened (available as data.input)
+			console.log("Edit");
+			},
+			save: function(event, data){
+				// Save data.input.val() or return false to keep editor open
+				if (data.input.val().length > 0) {
+					workspace[data.node.key-1].title = data.input.val();
+					$('#save-changes-button').trigger("click");
+				} else {
+					return false;
+				}
+			}
+		},
     });
 
 	// Initialize global variable tree to the fancyTree object:

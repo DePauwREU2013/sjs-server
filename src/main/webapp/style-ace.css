@@ -7,6 +7,10 @@ a:hover {
 	color: #ae81ff;
 }
 
+#tree input {
+	background-color: #272822;
+}
+
 #new-dialog {
     display: none;    
 }
