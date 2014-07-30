@@ -49,7 +49,7 @@ function init_local_storage() {
 	if (lstor.getItem("scales_workspace")) {
 		// nothing
 	} else {
-		lstor.setItem("scales_workspace", "[{\"title\":\"default.scala\",\"key\":\"1\",\"contents\":\"this is the contents of the file\",\"language\":\"scala\",\"dirty\":false},{\"title\":\"resource.scala\",\"key\":\"2\",\"contents\":\"/*This is an example of a second file in your project.*/\",\"language\":\"scala\",\"dirty\":false}]");
+		lstor.setItem("scales_workspace", "[{\"title\":\"main.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
 	}
 
 	// Populate the workspace buffer from the lstor:
@@ -153,8 +153,9 @@ function init_toolbar() {
 	// Save Changes button
 	// Saves the current workspace buffer into the local storage object
 	$('#save-changes-button').click( function() {
-		lstor.setItem("scales_workspace", JSON.stringify(workspace));
-		console.log("clicked.");
+		if (workspace) {
+			lstor.setItem("scales_workspace", JSON.stringify(workspace));
+		}
 		tree.reload();
 	});
 
