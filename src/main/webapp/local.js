@@ -230,7 +230,7 @@ function init_toolbar() {
 		HOST = "/compile";
 		// Save the workspace to local storage
 		$('save-changes-button').click();
-
+		$('#playgound').html('');
 		// Send the source code to the compiler and execute the result:
 		var build_request = $.ajax({
 			beforeSend: function() {
