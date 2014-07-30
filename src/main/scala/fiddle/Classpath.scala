@@ -32,7 +32,7 @@ object Classpath {
         "/scalarx_sjs0.5_2.11-0.2.5.jar",
         "/scala-async_2.11-0.9.1.jar",
         "/scalaxy-loops_2.11-0.1.1.jar",
-        "/sjs-scales_sjs0.5_2.11.jar"
+        "/sjs-scales_sjs0.5_2.11-0.1.jar"
       )
     } yield {
       val stream = getClass.getResourceAsStream(name)

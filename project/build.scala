@@ -17,10 +17,11 @@ object SjsserverBuild extends Build {
     .settings(scalaJSSettings:_*)
     .settings(
       resolvers += Resolver.sonatypeRepo("snapshots"),
+      resolvers += bintray.Opts.resolver.repo("bhoward", "maven"),
       libraryDependencies ++= Seq(
         "org.scala-lang" % "scala-reflect" % scalaVersion.value,
         "org.scala-lang.modules.scalajs" %%% "scalajs-dom" % "0.6",
-        "edu.depauw" %%% "sjs-scales" % "0.1-SNAPSHOT",
+        "edu.depauw" %%% "sjs-scales" % "0.1",
         "com.scalatags" %%% "scalatags" % "0.3.8",
         "org.scala-lang.modules" %% "scala-async" % "0.9.1" % "provided",
         "com.scalarx" %%% "scalarx" % "0.2.5",
@@ -74,5 +75,5 @@ object SjsserverBuild extends Build {
         )
       }
     )
-  )
+  ) dependsOn(runtime)
 }
