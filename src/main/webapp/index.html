@@ -44,9 +44,29 @@
                 
                 <!-- Toolbar: File Manipulation -->
 
-                <!-- New Project -->
-                 
-                <!-- New file -->
+                <!-- New file (Split button) -->
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-file"></span> New File</button>
+                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  
+                  <!-- New File: Dropdown menu -->
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#" id="new-file-button">Blank file</a></li>
+
+                    <li class="divider"></li>
+                    
+
+                    <li><a href="#" id="from-disk">From disk</a></li>
+                    <li><a href="#">From gist</a></li>
+
+                    <!-- Hidden file input -->
+<li><input style="visibility:hidden" id="file-picker" type="file" /></li>
+                  </ul>
+                </div>
+                
                 <button id="new-file-button" type="button" class="btn btn-default btn-xs">
                     <span class="glyphicon glyphicon-file"></span> New File
                 </button>
@@ -56,6 +76,10 @@
                     <span class="glyphicon glyphicon-floppy-disk"></span> Save Changes
                 </button>
 
+                <!-- Import local file -->
+                <button type="button" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-import"></span> Import file
+                </button>
                 <!-- Zoom Out -->
                 <button title="Ctrl-Alt-- (Mac: &#8984;-Alt-)"id="zoom-out-button" type="button" class="btn btn-default btn-xs"> 
                     <span class="glyphicon glyphicon-zoom-out"></span> Zoom Out

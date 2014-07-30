@@ -32,6 +32,8 @@ $(document).ready(function() {
 
     init_toolbar();
 
+    document.getElementById('file-picker').addEventListener('change', handleFileSelect, false);
+
 });
 
 /** init_local_storage
@@ -117,7 +119,9 @@ function load_file_tree() {
  */
 function init_toolbar() {
 	
-	// New File button
+	// New File (Split button)
+
+	// Blank file	
 	$('#new-file-button').click( function() {
 		// New file
 		file_name = prompt("Enter a name for the file:");
@@ -136,6 +140,9 @@ function init_toolbar() {
 	
 	}); 
 
+	$('#from-disk').click( function() {
+		$('#file-picker').click();
+	});
 	// Save Changes button
 	// Saves the current workspace buffer into the local storage object
 	$('#save-changes-button').click( function() {
@@ -461,3 +468,32 @@ document.addEventListener("keydown", function(e) {
         toggleFullScreen();
     }
 });
+
+function handleFileSelect(e) {
+	var f = e.target.files[0]; // The first file in the file list.
+	if (!f) {
+		console.log("Failed to open file.");
+	} else {
+		var file_name = f.name;
+		var reader = new FileReader();
+
+		reader.onload = function(e) {
+			var contents = e.target.result;
+			console.log(file_name + ": " + contents);
+			workspace.push({
+                "title": file_name,
+                "language": "scala",
+                "key": tree.count() +1,
+                "contents": contents,
+                "dirty": false
+            });
+            tree.reload();
+		}
+
+		reader.readAsText(f);
+
+	}
+}
+
+
+;
