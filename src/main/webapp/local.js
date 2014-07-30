@@ -13,6 +13,12 @@ var active_file,
 		height: 0
 	};
 
+function rekey() {
+	for (var e in workspace) {
+		workspace[e].key = (e + 1).toString().replace(/^0+/, '');
+	}
+}
+
 init_local_storage();
 
 /** document.ready
@@ -36,6 +42,38 @@ $(document).ready(function() {
 
 });
 
+/*function parser(onoff) {
+	editor.
+}*/
+
+function deleteProject() {
+	lstor.setItem("scales_workspace", "[{\"title\":\"untitled.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
+	workspace = JSON.parse(lstor.getItem("scales_workspace"));
+
+	tree.reload();	
+}
+
+function deleteFile (fname) {
+	var index = get_index_from_title(fname);
+	workspace.remove(index, index);
+	rekey();
+	tree.reload();
+}
+
+function renameFile (oldName, newName) {
+	var index = get_index_from_title(oldName);
+	workspace[index].title = newName;
+	tree.reload();
+}
+
+var get_index_from_title = function(title) {
+	for (var file in workspace) {
+		if (workspace[file].title == title) {
+			return file;
+		}
+	}
+}
+
 /** init_local_storage
  * Sets up localStorage (lstor), creating default workspace if none
  * already exists in lstor. Initilizes workspace buffer object from lstor.
@@ -49,7 +87,8 @@ function init_local_storage() {
 	if (lstor.getItem("scales_workspace")) {
 		// nothing
 	} else {
-		lstor.setItem("scales_workspace", "[{\"title\":\"main.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
+		deleteProject();
+		// lstor.setItem("scales_workspace", "[{\"title\":\"main.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
 	}
 
 	// Populate the workspace buffer from the lstor:
@@ -61,9 +100,7 @@ function init_local_storage() {
  * as its JSON source.
  */
 function load_file_tree() {
-
-	// Create the fancytree object:
-    $('#tree').fancytree({	
+	var fancy_tree_settings = {	
 		extensions: ["themeroller","edit"],
 		source: workspace,
 		debugLevel: 0,
@@ -96,7 +133,6 @@ function load_file_tree() {
 			},
 			edit: function(event, data){
 			// Editor was opened (available as data.input)
-			console.log("Edit");
 			},
 			save: function(event, data){
 				// Save data.input.val() or return false to keep editor open
@@ -107,8 +143,11 @@ function load_file_tree() {
 					return false;
 				}
 			}
-		},
-    });
+		}
+    };
+
+	// Create the fancytree object:
+    $('#tree').fancytree(fancy_tree_settings);
 
 	// Initialize global variable tree to the fancyTree object:
 	tree  = $("#tree").fancytree("getTree");
@@ -512,6 +551,7 @@ function open_gist(gistid) {
 		dataType: 'jsonp',
 		success: function(gistdata) {
 			for (var file in gistdata.data["files"]) {
+				
 				workspace.push({
 					"title": file,
 					"language": gistdata.data.files[file].language,
@@ -520,9 +560,32 @@ function open_gist(gistid) {
 					"dirty": false
 		    	});  		
 			}
+			$('#save-changes-button').click();
 			tree.reload();
 	  	debugData = gistdata;
 		
 		}
   	});
 }
+
+var help = "A number of can be accessed directly from the command line:\n\n" +
+	
+	"\t* deleteFile(<filename>) - " +
+	"Removes specified file from project, workspace, and local storage.\n" +
+	
+	"\t* deleteProject() - " +
+	"Deletes EVERYTHING. Then starts you off with a new default project.\n" +
+
+	"\t* renameFile(<oldName>, <newName>) - " +
+	"File specified will be renamed to the value of the second parameter.\n" +
+	"\t* help - " +
+	"Type 'help' at any time to see these instructions again.";
+
+console.log(help);
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
