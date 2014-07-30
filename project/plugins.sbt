@@ -4,3 +4,4 @@ addSbtPlugin("org.scalatra.sbt" % "scalatra-sbt" % "0.3.5")
 
 addSbtPlugin("org.scala-lang.modules.scalajs" % "scalajs-sbt-plugin" % "0.5.2")
 
+addSbtPlugin("com.typesafe.sbt" % "sbt-start-script" % "0.10.0")
