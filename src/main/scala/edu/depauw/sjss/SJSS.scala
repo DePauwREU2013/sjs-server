@@ -1,7 +1,6 @@
 package edu.depauw.sjss
 
 import org.scalatra._
-import scalate.ScalateSupport
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
 import scala.scalajs.tools.classpath.PartialIRClasspath
