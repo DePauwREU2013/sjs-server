@@ -193,7 +193,7 @@ function init_toolbar() {
 	});
 
 	$('#from-gist').click( function() {
-		var gistid = prompt("Please enter the Gist ID:", "b0229e0949df3fd3da99");
+		var gistid = prompt("Please enter the Gist ID:", "f1c887d451ac8c4d8a1f");
 		open_gist(gistid);
 	});
 
