@@ -230,10 +230,10 @@ function init_toolbar() {
 		HOST = "/compile";
 		// Save the workspace to local storage
 		$('save-changes-button').click();
-		$('#playgound').html('');
 		// Send the source code to the compiler and execute the result:
 		var build_request = $.ajax({
 			beforeSend: function() {
+				$('#playground').html('');
 				$('#scales-spinner').show();
 			},
 			type: "POST",
@@ -259,7 +259,8 @@ function init_toolbar() {
 			},
 			error: function (error_msg) {
 				debugData = error_msg;
-				$('#playground').append('<pre>'+error_msg.responseJSON.error+'</pre>');
+				render();
+				$('#playground').append('<pre style="z-index: 300;">'+error_msg.responseJSON.error+'</pre>');
 			},
 			complete: function() {
 				$('#scales-spinner').hide();
@@ -447,7 +448,9 @@ function init_editor_events() {
  * renders the red square on the canvas.
  */
 function render() {
-	// nothing
+	var canvas = document.querySelector('#output')
+	var ctx = canvas.getContext('2d');	
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 /** window.onbeforeunload
