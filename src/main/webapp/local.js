@@ -257,6 +257,10 @@ function init_toolbar() {
 
 				});	
 			},
+			error: function (error_msg) {
+				debugData = error_msg;
+				$('#playground').append('<pre>'+error_msg.responseJSON.error+'</pre>');
+			},
 			complete: function() {
 				$('#scales-spinner').hide();
 			}
@@ -571,7 +575,6 @@ function open_gist(gistid) {
 			}
 			$('#save-changes-button').click();
 			tree.reload();
-	  	debugData = gistdata;
 		
 		}
   	});
