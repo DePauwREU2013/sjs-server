@@ -143,6 +143,13 @@ function init_toolbar() {
 	$('#from-disk').click( function() {
 		$('#file-picker').click();
 	});
+
+	$('#from-gist').click( function() {
+		var gistid = prompt("Please enter the Gist ID:", "b0229e0949df3fd3da99");
+		open_gist(gistid);
+	});
+
+
 	// Save Changes button
 	// Saves the current workspace buffer into the local storage object
 	$('#save-changes-button').click( function() {
@@ -495,5 +502,26 @@ function handleFileSelect(e) {
 	}
 }
 
+function open_gist(gistid) {
+  console.log(gistid);
 
-;
+	$.ajax({
+		url: 'https://api.github.com/gists/' + gistid,
+		type: 'GET',
+		dataType: 'jsonp',
+		success: function(gistdata) {
+			for (var file in gistdata.data["files"]) {
+				workspace.push({
+					"title": file,
+					"language": gistdata.data.files[file].language,
+					"key": tree.count() +1,
+					"contents": gistdata.data.files[file].content,
+					"dirty": false
+		    	});  		
+			}
+			tree.reload();
+	  	debugData = gistdata;
+		
+		}
+  	});
+}
