@@ -5,9 +5,9 @@ var active_file,
 	tree,
 	lstor,
 	workspace,
-	worker,
 	HOST,
 	SOURCE;
+	parseOn = true,
 	canvas_size = {
 		width: 0,
 		height: 0
@@ -49,8 +49,9 @@ $(document).ready(function() {
 function deleteProject() {
 	lstor.setItem("scales_workspace", "[{\"title\":\"untitled.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
 	workspace = JSON.parse(lstor.getItem("scales_workspace"));
-
-	tree.reload();	
+	$('#tree').fancytree("destroy");
+	load_file_tree();
+	return ("Project deleted.");
 }
 
 function deleteFile (fname) {
@@ -58,12 +59,20 @@ function deleteFile (fname) {
 	workspace.remove(index, index);
 	rekey();
 	tree.reload();
+	return (fname + " deleted.");
 }
 
 function renameFile (oldName, newName) {
 	var index = get_index_from_title(oldName);
 	workspace[index].title = newName;
 	tree.reload();
+	return (oldName + " renamed to " + newName + ".");
+}
+
+function useParser(truefalse) {
+	parseOn = truefalse;
+	editor.getSession().clearAnnotations();	
+	return parseOn ? "Parser enabled." : "Parser disabled.";
 }
 
 var get_index_from_title = function(title) {
@@ -161,7 +170,7 @@ function init_toolbar() {
 	// New File (Split button)
 
 	// Blank file	
-	$('#new-file-button').click( function() {
+	$('.new-file-button').click( function() {
 		// New file
 		file_name = prompt("Enter a name for the file:");
 		if (file_name) {
@@ -376,10 +385,10 @@ function init_jquery_ui() {
  *  Executes the PEG.js parser
  */
 function exec_parser() {
-
+	if (Parser && parseOn)
     try {
       editor.getSession().clearAnnotations();
-      parser.parse(editor.getValue());
+      Parser.parse(editor.getValue());
     } catch(exn) {
       if (!editor.getSession().$annotations) {
         editor.getSession().$annotations = [];
@@ -578,6 +587,9 @@ var help = "A number of can be accessed directly from the command line:\n\n" +
 
 	"\t* renameFile(<oldName>, <newName>) - " +
 	"File specified will be renamed to the value of the second parameter.\n" +
+
+	"\t* useParser(true|false) - " +
+	"Turns the client-side parser on or off.\n"
 	"\t* help - " +
 	"Type 'help' at any time to see these instructions again.";
 

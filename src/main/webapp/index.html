@@ -48,7 +48,7 @@
 
                 <!-- New file (Split button) -->
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-xs">
+                    <button type="button" class="btn btn-default btn-xs new-file-button">
                         <span class="glyphicon glyphicon-file"></span> New File
                     </button>   
                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -58,7 +58,7 @@
                   
                   <!-- New File: Dropdown menu -->
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="#" id="new-file-button">Blank file</a></li>
+                    <li><a href="#" class="new-file-button">Blank file</a></li>
 
                     <li class="divider"></li>
                     
@@ -70,20 +70,12 @@
 <li><input style="visibility:hidden" id="file-picker" type="file" /></li>
                   </ul>
                 </div>
-                
-                <button id="new-file-button" type="button" class="btn btn-default btn-xs">
-                    <span class="glyphicon glyphicon-file"></span> New File
-                </button>
 
                 <!-- Save Changes -->
                 <button title="Ctrl-S (Mac: &#8984;-S)"id="save-changes-button" type="button" class="btn btn-default btn-xs">
                     <span class="glyphicon glyphicon-floppy-disk"></span> Save Changes
                 </button>
 
-                <!-- Import local file -->
-                <button type="button" class="btn btn-default btn-xs">
-                    <span class="glyphicon glyphicon-import"></span> Import file
-                </button>
                 <!-- Zoom Out -->
                 <button title="Ctrl-Alt-- (Mac: &#8984;-Alt-)"id="zoom-out-button" type="button" class="btn btn-default btn-xs"> 
                     <span class="glyphicon glyphicon-zoom-out"></span> Zoom Out
