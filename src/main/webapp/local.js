@@ -227,6 +227,12 @@ function init_toolbar() {
 	// Executes XHR's to dynamically load and run javascript files
 	// created by the server.
 	$('#build-run-button').click( function() {
+		var canvas = document.querySelector('#output');
+		if ($('#fullscreen-check').is(':checked')) {
+			if (canvas.mozRequestFullScreen) {						        
+				canvas.mozRequestFullScreen();
+			}	
+		}
 		HOST = "/compile";
 		// Save the workspace to local storage
 		$('save-changes-button').click();
@@ -245,11 +251,11 @@ function init_toolbar() {
 			// If it compiles, get the scripts it produced:
 			success: function (data) {
 				// TODO: remove hard-coded file names
-				$.ajax({
+				var build_data = $.ajax({
 					url: data.url,
 					dataType: "script",
 					success: function() {
-						Foo().main();					
+					    Foo().main();					
 					},
 					complete: function() {
 						$('#scales-spinner').hide();
