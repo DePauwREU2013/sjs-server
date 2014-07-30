@@ -47,7 +47,7 @@ $(document).ready(function() {
 }*/
 
 function deleteProject() {
-	lstor.setItem("scales_workspace", "[{\"title\":\"untitled.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
+	lstor.setItem("scales_workspace", "[{\"title\":\"main.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
 	workspace = JSON.parse(lstor.getItem("scales_workspace"));
 	$('#tree').fancytree("destroy");
 	load_file_tree();
