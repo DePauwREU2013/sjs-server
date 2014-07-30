@@ -447,10 +447,7 @@ function init_editor_events() {
  * renders the red square on the canvas.
  */
 function render() {
-	var c = document.querySelector('canvas');
-	var ctx = c.getContext('2d');
-	ctx.fillStyle = '#FF0000';
-	ctx.fillRect(0,0,50,50);
+	// nothing
 }
 
 /** window.onbeforeunload
