@@ -256,20 +256,14 @@ function init_toolbar() {
 	// Executes XHR's to dynamically load and run javascript files
 	// created by the server.
 	$('#build-run-button').click( function() {
-		var canvas = document.querySelector('#output');
-		if ($('#fullscreen-check').is(':checked')) {
-			if (canvas.mozRequestFullScreen) {						        
-				canvas.mozRequestFullScreen();
-			}	
-
-		}
+	
 		HOST = "/compile";
 		// Save the workspace to local storage
 		$('save-changes-button').click();
 		// Send the source code to the compiler and execute the result:
 		var build_request = $.ajax({
 			beforeSend: function() {
-				$('#playground').html('');
+				$('#playground pre').remove();
 				$('#scales-spinner').show();
 			},
 			type: "POST",
@@ -285,6 +279,13 @@ function init_toolbar() {
 					url: data.url,
 					dataType: "script",
 					success: function() {
+						var canvas = document.querySelector('#output');
+						if ($('#fullscreen-check').is(':checked')) {
+							if (canvas.mozRequestFullScreen) {		
+								console.log(canvas + " says, 'fullscreen, please'");				        
+								
+							}	
+						}
 					    Foo().main();					
 					},
 					complete: function() {
@@ -302,6 +303,17 @@ function init_toolbar() {
 				$('#scales-spinner').hide();
 			}
 		});	
+	});
+
+	$('#fullscreen-button').click( function() {
+		toggleFullScreen();
+	});
+	$('#replay-button').click( function() {
+		try {
+			Foo().main();
+		} catch(e) {
+			console.error(e);
+		}
 	});
 }
 
