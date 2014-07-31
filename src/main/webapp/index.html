@@ -66,6 +66,10 @@
                     <li><a href="#" id="from-disk">From disk</a></li>
                     <li><a href="#" id="from-gist">From gist</a></li>
 
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Examples:</li>
+                    <li><a href="#" id="piano-example">Piano Keys</a></li>
+                    <li><a href="#" id="ppt-example">Slide Presentation</a></li>
                     <!-- Hidden file input -->
 <li><input style="visibility:hidden" id="file-picker" type="file" /></li>
                   </ul>
@@ -97,7 +101,7 @@
                 <button title="Ctrl-Enter (Mac: &#8984;-Return)" id="build-run-button" type="button" class="btn btn-default btn-xs"> 
                     <span class="glyphicon glyphicon-play"></span> Build & Run 		
                 </button>
-	           <button title="" id="replay-button" type="button" class="btn btn-default btn-xs">
+	           <button title="Replays without re-compiling" id="replay-button" type="button" class="btn btn-default btn-xs">
                     <span class="glyphicon glyphicon-repeat"></span> Replay
                 </button>	                 
                 <!-- Fullscreen Toggle -->                         
@@ -136,8 +140,8 @@
             <!-- Panel for output canvas -->   
             <div id="autodiv" class="context-panel">
                 <div id="playground"></div>
-				<canvas  class="scales-editor" id="output">
-				</canvas>
+				    <canvas  class="scales-editor" id="output"></canvas> 
+                
             </div>
         </div>
     </body>

@@ -227,6 +227,17 @@ function init_toolbar() {
 		}
 	});
 
+	// EXAMPLES
+
+	// Piano
+	$('#piano-example').click( function() {
+		open_gist('71ac1ad25dda55900c08');
+	});
+
+	// PowerPoint
+	$('#ppt-example').click( function() {
+		open_gist('02290986b4184b485034');
+	})
 
 	// Save Changes button
 	// Saves the current workspace buffer into the local storage object
@@ -256,7 +267,7 @@ function init_toolbar() {
 	// Executes XHR's to dynamically load and run javascript files
 	// created by the server.
 	$('#build-run-button').click( function() {
-	
+		
 		HOST = "/compile";
 		// Save the workspace to local storage
 		$('save-changes-button').click();
@@ -524,7 +535,7 @@ function render() {
 
 function clear_workspace() {
 	active_file = null;
-	
+
 	workspace = [];
 }
 
