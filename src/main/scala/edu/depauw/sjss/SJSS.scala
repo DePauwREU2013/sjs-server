@@ -55,6 +55,11 @@ class SJSS extends SJSServerStack with JacksonJsonSupport {
 
   val prefix = """
     | object Foo extends js.JSApp {
+    |   import edu.depauw.scales.act._
+    |   import edu.depauw.scales.graphics._
+    |   import edu.depauw.scales.music._
+    |   import edu.depauw.scales.reactive._
+    |   import edu.depauw.scales.graphics.Base._
     """.stripMargin
     
   val mainPrefix = """

@@ -38,10 +38,6 @@ object Compiler{
       |import scalatags.JsDom.all._
       |import org.scalajs.dom
       |import scalajs.js
-      |import edu.depauw.scales.act._
-      |import edu.depauw.scales.graphics._
-      |import edu.depauw.scales.music._
-      |import edu.depauw.scales.reactive._
     """.stripMargin
 
   /**
