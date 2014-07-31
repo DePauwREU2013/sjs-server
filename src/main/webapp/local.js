@@ -122,7 +122,7 @@ function load_file_list() {
     
 
 	// If there's no active file, activate the last file in the list	
-	if (!active_file && workspace.length > 0) {
+	if (!active_file && workspace && workspace.length > 0) {
 		$('#' + workspace[workspace.length-1].title).trigger("click");
 	}
 
@@ -191,6 +191,9 @@ function init_toolbar() {
 	$('#new-file-button').click( function() {
 		// New file
 		file_name = prompt("Enter a name for the file:");
+		if (!workspace) {
+			workspace = [];
+		}
 		if (file_name) {
             workspace.push({
                 "title": file_name,
@@ -215,8 +218,13 @@ function init_toolbar() {
 	});
 
 	$('#from-gist').click( function() {
-		var gistid = prompt("Please enter the Gist ID:", "f1c887d451ac8c4d8a1f");
-		open_gist(gistid);
+		var gistid = null;
+		gistid = prompt("Please enter the Gist ID:", "f1c887d451ac8c4d8a1f");
+		
+		// If they didn't hit cancel
+		if (gistid) {
+			open_gist(gistid);
+		}
 	});
 
 
@@ -253,6 +261,7 @@ function init_toolbar() {
 			if (canvas.mozRequestFullScreen) {						        
 				canvas.mozRequestFullScreen();
 			}	
+
 		}
 		HOST = "/compile";
 		// Save the workspace to local storage
@@ -347,7 +356,6 @@ function init_ace() {
 function init_canvas() {
 	$('canvas').attr('width', $('#autodiv').css('width'));
 	$('canvas').attr('height', $('#autodiv').css('height'));
-	render(); //Redraw canvas
 }
 
 /** init_jquery_ui
@@ -358,6 +366,9 @@ function init_jquery_ui() {
 	// Make header resizable with a handle on the bottom.
 	$('#header').resizable({
 		handles: "s",
+		stop: function() {
+			render();
+		}
 	});
 
 	// Triggered on header resize: resize other elements to fit:
@@ -370,13 +381,16 @@ function init_jquery_ui() {
 			parseInt($(this).css('height')) + 9 + "px");
 		$('canvas').attr('width', $('#autodiv').css('width'));
 		$('canvas').attr('height', $('#autodiv').css('height'));
-		render(); // Redraw canvas
+		// render(); // Redraw canvas
 	});
 	
 
 	// Make context-list resizable with a handle on the right:
 	$('#context-list').resizable( {
-        handles: "e"
+        handles: "e",
+        stop: function() {
+    		render();
+    	}
     });
 
 	// Triggered on context-list (project explorer) resize...
@@ -387,12 +401,15 @@ function init_jquery_ui() {
 			parseInt($('#context-list').css('width'))-10 + 'px');
 		$('canvas').attr('width', $('#autodiv').css('width'));
 		$('canvas').attr('height', $('#autodiv').css('height'));
-		render(); // Redraw canvas
+		// render(); // Redraw canvas
     });
 
 	// Set resizable container for Ace editor with handle to right:
 	$( "#resizable" ).resizable( {
-        handles: "e"
+        handles: "e",
+        stop: function() {
+        	render();
+        }
     });
 	
 	// Triggered when Ace editor panel is resized:
@@ -408,7 +425,7 @@ function init_jquery_ui() {
 		$('#current-file').css('right',$('#resizable').css('right'));
 		$('canvas').attr('width', $('#autodiv').css('width'));
 		$('canvas').attr('height', $('#autodiv').css('height'));
-		render(); // Redraw canvas
+		// render(); // Redraw canvas
     }); 
 }
 
@@ -469,9 +486,28 @@ function init_editor_events() {
  * renders the red square on the canvas.
  */
 function render() {
-	var canvas = document.querySelector('#output')
-	var ctx = canvas.getContext('2d');	
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	var canvas = document.querySelector('#output');
+
+	canvas_size = {
+		width: canvas.width,
+		height: canvas.height
+	};
+
+	$('#playground').empty();
+	
+	var $canvas = $('<canvas/>', {
+		id: 'output',
+		width: canvas_size.width,
+		height: canvas_size.height
+	});
+
+	$('#playground').append($canvas);
+	
+	try {
+		Foo().main()
+	} catch (e) {
+		console.error(e);
+	}
 }
 
 function clear_workspace() {
@@ -497,9 +533,8 @@ function toggleFullScreen() {
 	if (canvas.mozRequestFullScreen) {
 		if (fullScreen) {
 			document.mozCancelFullScreen();
-			canvas.width = canvas_size.width;
-			canvas.height = canvas_size.height;
-			Foo().main();
+			
+
 		} else {
 			canvas_size.width = canvas.width;
 			canvas_size.height = canvas.height;
@@ -544,6 +579,7 @@ document.addEventListener("mozfullscreenchange", function(e) {
 		$('#output').attr("height", window.outerHeight);
 		Foo().main();
 	} else {
+		$('#resizable').trigger('resize');
 		// canvas.width = canvas_size.width;
 		// canvas.height = canvas_size.height;
 	}
@@ -592,6 +628,10 @@ function handleFileSelect(e) {
 	}
 }
 
+/** open_gist(gistid)
+ *  loads a project from a gist
+ *  @param gistid The id of the gist (the last segment of the url)
+ */
 function open_gist(gistid) {
 	$.ajax({
 		url: 'https://api.github.com/gists/' + gistid,
