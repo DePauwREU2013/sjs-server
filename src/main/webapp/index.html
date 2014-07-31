@@ -48,8 +48,8 @@
 
                 <!-- New file (Split button) -->
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-xs new-file-button">
-                        <span class="glyphicon glyphicon-file"></span> New File
+                    <button type="button" class="btn btn-default btn-xs" id="new-file-button">
+                        <span class="glyphicon glyphicon-file"></span> New File...
                     </button>   
                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
@@ -58,7 +58,7 @@
                   
                   <!-- New File: Dropdown menu -->
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="#" class="new-file-button">Blank file</a></li>
+                    <li><a href="#" id="empty-project-button">Empty Project</a></li>
 
                     <li class="divider"></li>
                     
@@ -114,7 +114,7 @@
         	<div id="context-heading" class="fancytree-active ui-widget ui-widget-content">Project Explorer:</div>
 
             <!-- Project Explorer: file tree -->
-            <div id="tree" style="border:none;"></div>
+            <div id="file-list-container" style="border:none;"></div>
         </div>
 
 <!-- Two primary panels -->

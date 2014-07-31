@@ -162,16 +162,32 @@ canvas:webkit-full-screen {
 	bottom: -10px;
 }
 
-ul.project-tree {
-    list-style-type: none;
-    padding: .5em;
-    padding-left: 1em;
+ul.file-list {
+	padding-top: 10px;
+	list-style-type: none;
 }
 
-#tree {
-	clear: left;
-	margin-bottom: 1em;
+ul.file-list li {
+	padding: 2px;
+	cursor: pointer;
+	color: white;
+	
 }
+
+.no-select {
+	user-select: none;
+	moz-user-select: none;
+	webkit-user-select: none;
+}
+
+ul.file-list li:hover {
+	background-color: gray;
+}
+
+ul.file-list li.active {
+	color: #ae81ff;
+}
+
 #github-link {
 	font-size: .8em;
 	margin: .5em 1em 0 0;

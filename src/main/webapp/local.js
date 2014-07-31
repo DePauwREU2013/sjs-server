@@ -2,7 +2,6 @@
 var active_file,
 	current_buffer, 
 	debugData,
-	tree,
 	lstor,
 	workspace,
 	HOST,
@@ -34,7 +33,7 @@ $(document).ready(function() {
 
 	init_editor_events();
 
-    load_file_tree();
+    load_file_list();
 
     init_toolbar();
 
@@ -47,25 +46,23 @@ $(document).ready(function() {
 }*/
 
 function deleteProject() {
-	lstor.setItem("scales_workspace", "[{\"title\":\"main.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
-	workspace = JSON.parse(lstor.getItem("scales_workspace"));
-	$('#tree').fancytree("destroy");
-	load_file_tree();
+	lstor.clear("scales_workspace");
+	clear_workspace();
+	reload_list();
 	return ("Project deleted.");
 }
 
 function deleteFile (fname) {
 	var index = get_index_from_title(fname);
 	workspace.remove(index, index);
-	rekey();
-	tree.reload();
+	reload_list();
 	return (fname + " deleted.");
 }
 
 function renameFile (oldName, newName) {
 	var index = get_index_from_title(oldName);
 	workspace[index].title = newName;
-	tree.reload();
+	reload_list();
 	return (oldName + " renamed to " + newName + ".");
 }
 
@@ -92,74 +89,95 @@ function init_local_storage() {
 	// abbreviation for window.localStorage
 	lstor = window.localStorage;
 
-	// If no workspace is represented in the lstor, create a default:
+	// If workspace is represented in the lstor, load it into the buffer
 	if (lstor.getItem("scales_workspace")) {
-		// nothing
-	} else {
-		deleteProject();
-		// lstor.setItem("scales_workspace", "[{\"title\":\"main.scala\",\"key\":\"1\",\"contents\":\"//You must have a main.scala\" ,\"language\":\"scala\",\"dirty\":false}]");
+		// Populate the workspace buffer from the lstor:
+		workspace = JSON.parse(lstor.getItem("scales_workspace"));
 	}
-
-	// Populate the workspace buffer from the lstor:
-	workspace = JSON.parse(lstor.getItem("scales_workspace"));
 }
 
-/** load_file_tree
- * Initializes fancy tree element using the urrent workspace object
- * as its JSON source.
+/** load_file_list()
+ *  Creates a list of files using the global workspace object
+ *  and renders it to the document.
  */
-function load_file_tree() {
-	var fancy_tree_settings = {	
-		extensions: ["themeroller","edit"],
-		source: workspace,
-		debugLevel: 0,
-		// When a node is activated (clicked/keyboard):
-		activate: function(event, data){
-			var node = data.node;
-			// If this is the first file activated this session:
-			if (editor.getReadOnly()) {
-				// Enable the ACE editor:		
-				editor.setReadOnly(false);
-			} else {
-				// Else, the user has just switched from another file	
-			}
-             // Set active_file to the newly activated file:
-			active_file = node;	
-			// Load document contents into editor:
-			editor.setValue(workspace[get_index()].contents);
-		}, 
-		// Allow file renaming:
-		edit: {
-			triggerStart: ["f2", "dblclick", "shift+click", "mac+enter"],
-			beforeClose: function(event, data){
-			// Return false to prevent cancel/save (data.input is available)
-			},
-			beforeEdit: function(event, data){
-			// Return false to prevent edit mode
-			},
-			close: function(event, data){
-			// Editor was removed
-			},
-			edit: function(event, data){
-			// Editor was opened (available as data.input)
-			},
-			save: function(event, data){
-				// Save data.input.val() or return false to keep editor open
-				if (data.input.val().length > 0) {
-					workspace[data.node.key-1].title = data.input.val();
-					$('#save-changes-button').trigger("click");
-				} else {
-					return false;
-				}
-			}
-		}
+function load_file_list() {
+	
+	// Save the workspace to the lstor:
+	
+
+	// Make the list
+    var $ul = $("<ul/>", {class: 'file-list'});
+    
+    // Add the file list items to the list:
+    for (var file in workspace) {
+	    $ul.append(get_list_item(workspace[file]));
+    }
+    
+    // Make sure there are no blank list items:
+
+
+    // Add the list to the container div:
+    $('#file-list-container').append($ul);
+    
+    
+
+	// If there's no active file, activate the last file in the list	
+	if (!active_file && workspace.length > 0) {
+		$('#' + workspace[workspace.length-1].title).trigger("click");
+	}
+
+	$('#save-changes-button').click();
+    /** get_list_item(file_obj)
+     *	Returns an html <li> element for the specified file.
+     *  @param file_obj A JSON object representing a file.
+     *  @return an <li> element for the file.
+     */
+    function get_list_item(file_obj) {
+        
+        // Build the empty <li> element:
+        var $li = $('<li/>', {
+            id: file_obj.title,
+            class: 'file-list',
+
+            // When clicked:
+            click: function()  {
+            	
+            	// De-activate the previously active list item:
+            	$('li.active').removeClass('active');
+            	
+            	// Set the global active_file to the selected file:
+            	active_file = file_obj;
+
+            	// Activate this list item: 
+             	$(this).addClass('active');
+
+            	// Enable writing in the Ace editor:
+            	editor.setReadOnly(false);
+
+            	// Load file contents into the editor:
+            	editor.setValue(file_obj.contents);
+             }
+        });
+        var $icon = $('<span/>', {class: 'glyphicon glyphicon-file'});
+
+        if (file_obj.title) {
+	        // Place the file's title as the text in the <li> elem:
+	        $li.append($icon);
+	        $li.append(" ");
+	        $li.append(file_obj.title);
+   		}
+       
+    	return $li;
     };
+}
 
-	// Create the fancytree object:
-    $('#tree').fancytree(fancy_tree_settings);
-
-	// Initialize global variable tree to the fancyTree object:
-	tree  = $("#tree").fancytree("getTree");
+/** reload_list()
+ *  Clears out the previously rendered file list and generates a new 
+ *  one from scratch.
+ */
+function reload_list() {
+	$('#file-list-container').empty();
+	load_file_list();
 }
 
 /** init_toolbar
@@ -170,24 +188,28 @@ function init_toolbar() {
 	// New File (Split button)
 
 	// Blank file	
-	$('.new-file-button').click( function() {
+	$('#new-file-button').click( function() {
 		// New file
 		file_name = prompt("Enter a name for the file:");
 		if (file_name) {
             workspace.push({
                 "title": file_name,
                 "language": "scala",
-                "key": tree.count() +1,
+                "key": workspace.length,
                 "contents": "",
                 "dirty": false
             });
 		}
-  
-		// Save the workspace to local storage
-		$('#save-changes-button').trigger("click");
-	
+		active_file = workspace[workspace.length];
+  		reload_list();
 	}); 
 
+	// Empty Project 
+	$('#empty-project-button').click( function() {
+		clear_workspace();
+		reload_list();
+		init_ace();
+	});
 	$('#from-disk').click( function() {
 		$('#file-picker').click();
 	});
@@ -204,7 +226,6 @@ function init_toolbar() {
 		if (workspace) {
 			lstor.setItem("scales_workspace", JSON.stringify(workspace));
 		}
-		tree.reload();
 	});
 
 	// Zoom out button
@@ -418,21 +439,13 @@ function exec_parser() {
     } // catch(exn)
 }
 
-/** get_index
- *  returns a zero-based index derived from active_file's 
- *  fancyTree key.
- */
-function get_index() {
-	return active_file.key - 1;
-}
-
 /** update_buffer
  *  Stores the editor's contents into the workspace buffer.
  */
 function update_buffer() {
 
-	
-	workspace[get_index()].contents = editor.getValue();
+
+	workspace[get_index_from_title(active_file.title)].contents = editor.getValue();
 	// Find the approprate file in the workspace
 }
 
@@ -444,8 +457,10 @@ function update_buffer() {
 function init_editor_events() {
   // Syntax checking/error reporting
   editor.on("change", function(e) {
-    exec_parser();
-    update_buffer();
+  	if (active_file) {
+	    exec_parser();
+   		update_buffer();
+   	}
   });
 
 }
@@ -457,6 +472,12 @@ function render() {
 	var canvas = document.querySelector('#output')
 	var ctx = canvas.getContext('2d');	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function clear_workspace() {
+	active_file = null;
+	
+	workspace = [];
 }
 
 /** window.onbeforeunload
@@ -535,6 +556,9 @@ document.addEventListener("keydown", function(e) {
     }
 });
 
+/** handleFileSelect(e)
+ *  loads file from local filesystem
+ */
 function handleFileSelect(e) {
 	var f = e.target.files[0]; // The first file in the file list.
 	if (!f) {
@@ -544,16 +568,23 @@ function handleFileSelect(e) {
 		var reader = new FileReader();
 
 		reader.onload = function(e) {
+			clear_workspace();
+
 			var contents = e.target.result;
-			console.log(file_name + ": " + contents);
 			workspace.push({
                 "title": file_name,
                 "language": "scala",
-                "key": tree.count() +1,
+                "key": workspace.length,
                 "contents": contents,
                 "dirty": false
             });
-            tree.reload();
+
+            reload_list();
+            try {
+				$('ul.file-list li:first-child').trigger("click");
+			} catch (e) {
+				console.log(e);
+			}
 		}
 
 		reader.readAsText(f);
@@ -562,26 +593,28 @@ function handleFileSelect(e) {
 }
 
 function open_gist(gistid) {
-  console.log(gistid);
-
 	$.ajax({
 		url: 'https://api.github.com/gists/' + gistid,
 		type: 'GET',
 		dataType: 'jsonp',
 		success: function(gistdata) {
+			clear_workspace();
 			for (var file in gistdata.data["files"]) {
 				
 				workspace.push({
 					"title": file,
 					"language": gistdata.data.files[file].language,
-					"key": tree.count() +1,
+					"key": workspace.length,
 					"contents": gistdata.data.files[file].content,
 					"dirty": false
 		    	});  		
 			}
-			$('#save-changes-button').click();
-			tree.reload();
-		
+			reload_list();
+			try {
+				$('ul.file-list li:first-child').trigger("click");
+			} catch (e) {
+				console.log(e);
+			}
 		}
   	});
 }
