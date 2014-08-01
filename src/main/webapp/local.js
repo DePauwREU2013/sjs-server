@@ -215,7 +215,7 @@ function init_toolbar() {
 	});
 
 	$('#from-gist').click( function() {
-		var gistid = prompt("Please enter the Gist ID:", "f1c887d451ac8c4d8a1f");
+		var gistid = prompt("Please enter the Gist ID:", "02290986b4184b485034");
 		open_gist(gistid);
 	});
 
@@ -516,8 +516,8 @@ function toggleFullScreen() {
 			document.webkitExitFullscreen();
 		} else {
 			canvas.webkitRequestFullscreen();
-			$('#output').attr("width",window.outerWidth);
-			$('#output').attr("height",window.outerHeight);
+			$('#output').attr("width",screen.availWidth);
+			$('#output').attr("height",screen.availHeight);
 			render();		
 
 		}
@@ -531,7 +531,6 @@ document.addEventListener("webkitfullscreenchange", function(e) {
 		$('#output').attr("width",window.outerWidth);
 		$('#output').attr("height",window.outerHeight);
 		//render();		
-
 	}
 })
 
